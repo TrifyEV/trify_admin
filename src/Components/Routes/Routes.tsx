@@ -11,9 +11,10 @@ const ComputedRoutes: React.FunctionComponent = () => {
         <Route element={<PublicRoutes />}>
           <Route path="/login" element={<Login />} />
         </Route>
-        <Route element={<ProtectedRoute />}>
-          <Route index element={<Home />} />
-        </Route>
+        {/* <Route element={<ProtectedRoute />}> */}
+        <Route index element={<Home />} />
+        {/* <Route index element={<M />} /> */}
+        {/* </Route> */}
       </Routes>
     </>
   );

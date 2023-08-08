@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import AuthConsumer from "./AuthProvider";
+import Navbar from "./Navbar";
 
 export const ProtectedRoute = () => {
   const auth = AuthConsumer();
@@ -8,9 +9,9 @@ export const ProtectedRoute = () => {
   if (!auth?.token) {
     let loginUrl = "";
     if (location.pathname == "/") {
-      loginUrl = "/login";
+      loginUrl = "/trify_admin/login";
     } else {
-      loginUrl = `/login?redirectUrl=${location.pathname}`;
+      loginUrl = `/trify_admin/login?redirectUrl=${location.pathname}`;
     }
     return <Navigate to={loginUrl} replace state={{ from: location }} />;
   }
@@ -20,5 +21,13 @@ export const ProtectedRoute = () => {
 
 export const PublicRoutes = () => {
   const auth = AuthConsumer();
-  return auth?.token ? <Navigate to="/" /> : <Outlet />;
+  return auth?.token ? (
+    <div>
+      <Navigate to="/trify_admin/" />
+    </div>
+  ) : (
+    <div>
+      <Outlet />
+    </div>
+  );
 };

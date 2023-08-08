@@ -5,10 +5,11 @@ const Home = () => {
   const auth = useAuth();
   return (
     <div>
+      <br />
       <Typography>Welcome to the home page. You are logged in</Typography>
-      <Button onClick={auth?.signout} variant="outlined">
+      {/* <Button onClick={auth?.signout} variant="outlined">
         Log out
-      </Button>
+      </Button> */}
     </div>
   );
 };
