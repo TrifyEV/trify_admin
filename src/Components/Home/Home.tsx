@@ -1,12 +1,7 @@
-import { Typography } from "@mui/material";
+import MapView from "../MapView/MapView";
 
 const Home = () => {
-  return (
-    <div>
-      <br />
-      <Typography>Welcome to the home page. You are logged in</Typography>
-    </div>
-  );
+  return <MapView />;
 };
 
 export default Home;

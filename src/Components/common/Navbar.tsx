@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "../common/AuthProvider";
 
 const Navbar = () => {
@@ -9,7 +8,6 @@ const Navbar = () => {
       <nav
         className="navbar navbar-expand-lg "
         style={{ backgroundColor: "#FFAC1C" }}
-        // style="background-color: #e3f2fd;"
       >
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
