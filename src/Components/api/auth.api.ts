@@ -12,10 +12,3 @@ export const loginUser = (data: { username: string; password: string }) =>
     {},
     { body: JSON.stringify(data) }
   );
-
-// example;
-// export const getKvStoreDetailsByID = (repoId: string, kvStoreId: string) =>
-//   doGet<KvStoreDetails>(API_CONSTANTS.GET_KV_STORES_DETAILS_BY_ID, {
-//     repoId,
-//     kvStoreId,
-//   });

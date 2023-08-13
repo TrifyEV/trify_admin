@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
-import Button from "@mui/material/Button";
-import { Stack, StepLabel } from "@mui/material";
+import { StepLabel } from "@mui/material";
 import MapIcon from "@mui/icons-material/Map";
 
 export const TimelineChartComponent: React.FC<{
@@ -14,24 +13,13 @@ export const TimelineChartComponent: React.FC<{
   const [activeStep, setActiveStep] = React.useState(0);
   const CustomMapIcon = () => <MapIcon style={{ color: "orange" }} />;
 
-  const handleNext = () => {
-    const newActiveStep = activeStep === journeyCount ? 0 : activeStep + 1;
-    setActiveStep(newActiveStep);
-    setJourney(newActiveStep);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setJourney((prevActiveStep) => prevActiveStep - 1);
-  };
-
   const handleStep = (step: number) => () => {
     setActiveStep(step);
     setJourney(step);
   };
 
   return (
-    <Box sx={{ maxWidth: "100%" }}>
+    <Box sx={{ maxWidth: "100%", overflow: "scroll" }}>
       <Stepper
         nonLinear
         activeStep={activeStep}
@@ -55,16 +43,6 @@ export const TimelineChartComponent: React.FC<{
           </StepButton>
         </Step>
       </Stepper>
-
-      <Stack direction={"row"} sx={{ pt: 2 }}>
-        <Button disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-          Back
-        </Button>
-        <Box sx={{ flex: "1 1 auto" }} />
-        <Button onClick={handleNext} sx={{ mr: 1 }}>
-          Next
-        </Button>
-      </Stack>
     </Box>
   );
 };

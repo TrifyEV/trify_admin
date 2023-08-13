@@ -44,7 +44,6 @@ const doCall = async (
     if (response.ok === false) {
       const res = await response.json();
       if (response.status === 401) {
-        window.location.href = "/login";
         return {};
       }
       throw new ApiException(

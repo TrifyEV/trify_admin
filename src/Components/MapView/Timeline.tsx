@@ -4,13 +4,15 @@ import DateDropdown from "../common/FormsUI/DatePicker";
 import dayjs from "dayjs";
 import logo from "../../assets/bike.png";
 import { TimelineChartComponent } from "./TimelineChartComponent";
+import Spinner from "../common/spiner";
 
 const Timeline: React.FC<{
   setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
   setJourney: React.Dispatch<React.SetStateAction<number>>;
   journeyCount: number;
   setBikeID: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ setDate, setBikeID, journeyCount, setJourney }) => {
+  isLoadingData: boolean;
+}> = ({ setDate, setBikeID, journeyCount, setJourney, isLoadingData }) => {
   return (
     <div className="timeline">
       <div className="card text-white bg-light mb-3 border-0">
@@ -49,10 +51,14 @@ const Timeline: React.FC<{
           </Stack>
 
           <br />
-          <TimelineChartComponent
-            journeyCount={journeyCount}
-            setJourney={setJourney}
-          />
+          {isLoadingData ? (
+            <Spinner />
+          ) : (
+            <TimelineChartComponent
+              journeyCount={journeyCount}
+              setJourney={setJourney}
+            />
+          )}
         </div>
       </div>
     </div>
