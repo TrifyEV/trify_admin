@@ -61,7 +61,9 @@ const MapComponent: React.FC<{
 
   const locations = useMemo(() => {
     if (!data) return [];
-    const journeyData = data[journey + 1];
+    const journeyKey = parseInt(Object.keys(data)?.[journey]);
+    if (!journeyKey || isNaN(journeyKey)) return [];
+    const journeyData = data[journeyKey];
     if (!journeyData) return [];
     return journeyData.map((data) => L.latLng([data.lat, data.long]));
   }, [data, journey]);
