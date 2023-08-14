@@ -7,7 +7,7 @@ interface LocationInfo {
   speed: number;
 }
 
-interface VehicleLocations {
+export interface VehicleLocations {
   [journeyId: number]: LocationInfo[];
 }
 

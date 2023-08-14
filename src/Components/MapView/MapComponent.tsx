@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { getVehicleJourney } from "../api/admin.api";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import "leaflet-routing-machine";
 import L from "leaflet";
 import { MapComponentContainer } from "./MapView.style";
@@ -13,7 +13,9 @@ const MapComponent: React.FC<{
   bikeID: number;
   setJourneyCount: (count: number) => void;
   setIsLoadingData: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ bikeID, date, setJourneyCount, setIsLoadingData }) => {
+}> = ({ bikeID, date, journey, setJourneyCount, setIsLoadingData }) => {
+  const [reRenderRoute, setRerenderRoute] = useState(false);
+
   const { data, isLoading } = useSWR(
     `get-vehicle-journey-${bikeID}-${date?.format("YYYY-MM-DD")}`,
     () => {
@@ -36,11 +38,25 @@ const MapComponent: React.FC<{
     setIsLoadingData(isLoading);
   }, [isLoading]);
 
+  useEffect(() => {
+    setRerenderRoute(true);
+    setTimeout(() => {
+      setRerenderRoute(false);
+    }, 10);
+  }, [journey]);
+
+  const locations = useMemo(() => {
+    if (!data) return [];
+    const journeyData = data[journey + 1];
+    if (!journeyData) return [];
+    return journeyData.map((data) => L.latLng([data.lat, data.long]));
+  }, [data, journey]);
+
   return (
     <MapComponentContainer>
       <MapContainer
-        center={[51.505, -0.09]}
-        zoom={13}
+        center={[0.347596, 32.58252]}
+        zoom={7}
         scrollWheelZoom={true}
         style={{ height: "90vh", width: "100%" }}
       >
@@ -48,24 +64,21 @@ const MapComponent: React.FC<{
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Routing />
+        {locations.length === 1 ? <Marker position={locations[0]} /> : null}
+        {!reRenderRoute && <Routing waypoints={locations} />}
       </MapContainer>
     </MapComponentContainer>
   );
 };
 
-export const Routing: React.FC = () => {
+export const Routing: React.FC<{ waypoints: L.LatLng[] }> = ({ waypoints }) => {
   const map = useMap();
 
   useEffect(() => {
     if (!map) return;
 
     const routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(57.74, 11.94),
-        L.latLng(57.6792, 11.949),
-        L.latLng(57.6345, 11.949),
-      ],
+      waypoints: [...waypoints],
       lineOptions: {
         styles: [{ color: "#ff8c00", weight: 4 }],
         extendToWaypoints: false,
