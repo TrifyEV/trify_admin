@@ -12,3 +12,8 @@ export const TimelineContainer = styled("div")`
   max-height: 10%;
   z-index: 1000;
 `;
+export const MapComponentContainer = styled("div")`
+  .leaflet-routing-alternatives-container {
+    display: none;
+  }
+`;
