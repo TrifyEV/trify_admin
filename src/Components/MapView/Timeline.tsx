@@ -4,7 +4,7 @@ import DateDropdown from "../common/FormsUI/DatePicker";
 import dayjs from "dayjs";
 import logo from "../../assets/bike.png";
 import { TimelineChartComponent } from "./TimelineChartComponent";
-import Spinner from "../common/spiner";
+import Spinner from "../common/Spiner";
 
 const Timeline: React.FC<{
   setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
