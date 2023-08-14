@@ -1,11 +1,26 @@
 import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import { getVehicleJourney } from "../api/admin.api";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import "leaflet-routing-machine";
 import L from "leaflet";
 import { MapComponentContainer } from "./MapView.style";
+import { VehicleLocations } from "../api/admin.api";
+
+const fetchroutes: (
+  bikeID: number,
+  startData: string,
+  endDate: string
+) => Promise<VehicleLocations> = async (
+  bikeID: number,
+  startData: string,
+  endDate: string
+) => {
+  const uri =
+    import.meta.env.VITE_BACKEND_ENDPOINT +
+    `/api/admin/vehicle_journey?vehicle_id=${bikeID}&start_date=${startData}&end_date=${endDate}`;
+  return await fetch(uri).then((res) => res.json());
+};
 
 const MapComponent: React.FC<{
   date: dayjs.Dayjs | null;
@@ -20,14 +35,13 @@ const MapComponent: React.FC<{
     `get-vehicle-journey-${bikeID}-${date?.format("YYYY-MM-DD")}`,
     () => {
       if (bikeID && date) {
-        return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
+        return fetchroutes(bikeID, "2023-01-01", "2023-12-31");
       }
     }
   );
 
   useEffect(() => {
     if (data) {
-      console.log("data length", Object.getOwnPropertyNames(data).length);
       setJourneyCount(Object.getOwnPropertyNames(data).length);
     } else {
       setJourneyCount(0);
