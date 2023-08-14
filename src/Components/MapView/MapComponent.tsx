@@ -6,6 +6,15 @@ import "leaflet-routing-machine";
 import L from "leaflet";
 import { MapComponentContainer } from "./MapView.style";
 import { VehicleLocations } from "../api/admin.api";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 const fetchroutes: (
   bikeID: number,
