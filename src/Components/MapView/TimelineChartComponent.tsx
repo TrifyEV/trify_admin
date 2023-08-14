@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
-import { StepLabel } from "@mui/material";
+import { StepLabel, Typography } from "@mui/material";
 import MapIcon from "@mui/icons-material/Map";
 
 export const TimelineChartComponent: React.FC<{
@@ -37,11 +37,15 @@ export const TimelineChartComponent: React.FC<{
             </Step>
           );
         })}
-        <Step>
-          <StepButton onClick={handleStep(journeyCount)}>
-            <StepLabel StepIconComponent={CustomMapIcon}>All</StepLabel>
-          </StepButton>
-        </Step>
+        {journeyCount === 0 ? (
+          <Typography sx={{ color: "black" }}>No journeyes found</Typography>
+        ) : (
+          <Step>
+            <StepButton onClick={handleStep(journeyCount)}>
+              <StepLabel StepIconComponent={CustomMapIcon}>All</StepLabel>
+            </StepButton>
+          </Step>
+        )}
       </Stepper>
     </Box>
   );

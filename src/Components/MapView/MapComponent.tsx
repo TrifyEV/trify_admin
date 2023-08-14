@@ -18,7 +18,7 @@ const fetchroutes: (
 ) => {
   const uri =
     import.meta.env.VITE_BACKEND_ENDPOINT +
-    `/api/admin/vehicle_journey?vehicle_id=${bikeID}&start_date=${startData}&end_date=${endDate}`;
+    `/api/admin/vehicle_journey?vehicle_id=${bikeID}&start_date=${startData}&end_date=${endDate}&step=3`;
   return await fetch(uri).then((res) => res.json());
 };
 
@@ -94,7 +94,7 @@ export const Routing: React.FC<{ waypoints: L.LatLng[] }> = ({ waypoints }) => {
     const routingControl = L.Routing.control({
       waypoints: [...waypoints],
       lineOptions: {
-        styles: [{ color: "#ff8c00", weight: 4 }],
+        styles: [{ color: "#0e60b3", weight: 8 }],
         extendToWaypoints: false,
         missingRouteTolerance: 100,
       },
