@@ -57,7 +57,7 @@ const MapComponent: React.FC<{
     setTimeout(() => {
       setRerenderRoute(false);
     }, 10);
-  }, [journey]);
+  }, [journey, data]);
 
   const locations = useMemo(() => {
     if (!data) return [];
