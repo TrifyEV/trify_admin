@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet-routing-machine";
 import L from "leaflet";
 import { MapComponentContainer } from "./MapView.style";
@@ -80,7 +80,6 @@ const MapComponent: React.FC<{
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {locations.length === 1 ? <Marker position={locations[0]} /> : null}
         {!reRenderRoute && <Routing waypoints={locations} />}
       </MapContainer>
     </MapComponentContainer>
