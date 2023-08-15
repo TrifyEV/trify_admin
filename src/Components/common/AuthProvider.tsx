@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookie } from "./hooks/useCookie";
+import { clearCookie, getCookieValue, setCookie } from "../api/authUtils";
+import { COOKIE_CONSTANTS } from "../api/constants";
 
 interface ISignInRequest {
   newtoken: string;
@@ -17,20 +18,20 @@ interface IAuthData {
 const AuthContext = React.createContext<IAuthData | null>(null);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const cookies = useCookie();
-  const [token, setToken] = React.useState<string | null>(cookies.get("token"));
+  const [token, setToken] = React.useState<string | null>(
+    getCookieValue(COOKIE_CONSTANTS.TOKEN)
+  );
   const navigate = useNavigate();
-  const signin = ({ newtoken, redirectUrl }: ISignInRequest) => {
+  const signin = ({ newtoken, refresh, redirectUrl }: ISignInRequest) => {
     const origin = redirectUrl || "/";
-    cookies.set("token", newtoken);
+    setCookie(COOKIE_CONSTANTS.TOKEN, newtoken);
+    setCookie(COOKIE_CONSTANTS.REFRESH_TOKEN, refresh || "");
     setToken(newtoken);
     navigate(origin);
   };
-
   const signout = () => {
     setToken(null);
-    cookies.set("token", "", new Date().toUTCString());
-    cookies.set("user", "", new Date().toUTCString());
+    clearCookie(COOKIE_CONSTANTS.TOKEN);
     navigate("/login");
   };
 

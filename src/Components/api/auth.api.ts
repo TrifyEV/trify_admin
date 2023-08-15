@@ -1,4 +1,4 @@
-import { doPost } from ".";
+import instance from "./axiosInstance";
 import API_CONSTANTS from "./constants";
 
 export type LoginResponse = {
@@ -7,8 +7,4 @@ export type LoginResponse = {
 };
 
 export const loginUser = (data: { username: string; password: string }) =>
-  doPost<LoginResponse>(
-    API_CONSTANTS.LOGIN,
-    {},
-    { body: JSON.stringify(data) }
-  );
+  instance.post<LoginResponse>(API_CONSTANTS.LOGIN, data);

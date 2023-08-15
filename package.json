@@ -19,6 +19,7 @@
     "@mui/material": "^5.14.2",
     "@mui/x-date-pickers": "^6.11.1",
     "@types/leaflet-routing-machine": "^3.2.4",
+    "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
     "dayjs": "^1.11.9",
     "formik": "^2.4.2",

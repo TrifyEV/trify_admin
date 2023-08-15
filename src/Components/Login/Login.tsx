@@ -7,13 +7,13 @@ import * as Yup from "yup";
 import useSWRMutation from "swr/mutation";
 import { loginUser } from "../api/auth.api";
 import { useNavigate } from "react-router-dom";
-import { useCookie } from "../common/hooks/useCookie";
 import { useAuth } from "../common/AuthProvider";
+import { getCookieValue, setCookie } from "../api/authUtils";
+import { COOKIE_CONSTANTS } from "../api/constants";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const auth = useAuth();
-  const cookies = useCookie();
   const INITIAL_FORM_STATE = {
     username: "",
     password: "",
@@ -47,10 +47,13 @@ const Login: React.FC = () => {
     if (error) {
       navigate("/login");
     } else if (data) {
-      const { access } = data;
-      const redirectUrl = cookies.get("redirectUrl") || undefined;
-      auth?.signin({ newtoken: access, redirectUrl });
-      cookies.set("redirectUrl", "", new Date().toUTCString());
+      const {
+        data: { access, refresh },
+      } = data;
+      const redirectUrl =
+        getCookieValue(COOKIE_CONSTANTS.REDIRECT_URL) || undefined;
+      auth?.signin({ newtoken: access, refresh, redirectUrl });
+      setCookie(COOKIE_CONSTANTS.REDIRECT_URL, "");
     }
   }, [data, error, navigate]);
 

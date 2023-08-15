@@ -1,5 +1,4 @@
-import { doGet } from ".";
-import API_CONSTANTS from "./constants";
+import instance from "./axiosInstance";
 
 interface LocationInfo {
   lat: number;
@@ -16,8 +15,6 @@ export const getVehicleJourney = (
   start_date: string,
   end_date: string
 ) =>
-  doGet<VehicleLocations>(API_CONSTANTS.GET_VEHICALE_JOURNEY, {
-    vehicle_id,
-    start_date,
-    end_date,
-  });
+  instance.get<VehicleLocations>(
+    `/api/admin/vehicle_journey?vehicle_id=${vehicle_id}&start_date=${start_date}&end_date=${end_date}&step=3`
+  );
