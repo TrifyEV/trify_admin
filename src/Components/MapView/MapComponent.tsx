@@ -33,6 +33,7 @@ const MapComponent: React.FC<{
       }
     }
   );
+
   useEffect(() => {
     if (data?.data) {
       setJourneyCount(Object.getOwnPropertyNames(data.data).length);
