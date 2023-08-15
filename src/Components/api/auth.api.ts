@@ -1,4 +1,4 @@
-import instance from "./axiosInstance";
+import axiosInstance from "./axiosInstance";
 
 export type LoginResponse = {
   access: string;
@@ -6,4 +6,4 @@ export type LoginResponse = {
 };
 
 export const loginUser = (data: { username: string; password: string }) =>
-  instance.post<LoginResponse>("/api/token/", data);
+  axiosInstance.post<LoginResponse>("/api/token/", data);

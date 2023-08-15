@@ -6,11 +6,11 @@ import axios, {
 import { clearCookie, getCookieValue, setCookie } from "./authUtils";
 import { COOKIE_CONSTANTS } from "./constants";
 
-const instance: AxiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_ENDPOINT,
 });
 
-instance.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any>) => {
     const token = getCookieValue(COOKIE_CONSTANTS.TOKEN);
     if (token) {
@@ -23,7 +23,7 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -32,7 +32,7 @@ instance.interceptors.response.use(
       const refreshToken = getCookieValue(COOKIE_CONSTANTS.REFRESH_TOKEN);
       if (refreshToken) {
         try {
-          const newTokenResponse = await instance.post<{
+          const newTokenResponse = await axiosInstance.post<{
             access: string;
           }>("/api/token/refresh/", {
             refresh: refreshToken,
@@ -57,4 +57,4 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export default axiosInstance;
