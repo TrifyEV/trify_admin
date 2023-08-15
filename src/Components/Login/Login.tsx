@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Stack, Typography } from "@mui/material";
 import TextField from "../common/FormsUI/Textfield";
 import Button from "../common/FormsUI/Button";
@@ -23,29 +23,29 @@ const Login: React.FC = () => {
     password: Yup.string().required("Required"),
   });
 
-  const { data, mutate, isError, isLoading } = useMutation(
+  const { mutate, isLoading } = useMutation(
     (userDetails: LoginUserRequestType) => {
       return loginUser(userDetails);
+    },
+    {
+      onSuccess: (data) => {
+        const {
+          data: { access, refresh },
+        } = data;
+        const redirectUrl =
+          getCookieValue(COOKIE_CONSTANTS.REDIRECT_URL) || undefined;
+        auth?.signin({ newtoken: access, refresh, redirectUrl });
+        setCookie(COOKIE_CONSTANTS.REDIRECT_URL, "");
+      },
+      onError: () => {
+        navigate("/login");
+      },
     }
   );
 
   const handleLogin = (values: typeof INITIAL_FORM_STATE) => {
     mutate({ username: values.username, password: values.password });
   };
-
-  useEffect(() => {
-    if (isError) {
-      navigate("/login");
-    } else if (data) {
-      const {
-        data: { access, refresh },
-      } = data;
-      const redirectUrl =
-        getCookieValue(COOKIE_CONSTANTS.REDIRECT_URL) || undefined;
-      auth?.signin({ newtoken: access, refresh, redirectUrl });
-      setCookie(COOKIE_CONSTANTS.REDIRECT_URL, "");
-    }
-  }, [data, isError, navigate]);
 
   return (
     <Container maxWidth="xs" sx={{ mt: "6rem" }}>
