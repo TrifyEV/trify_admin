@@ -4,12 +4,12 @@ import TextField from "../common/FormsUI/Textfield";
 import Button from "../common/FormsUI/Button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import useSWRMutation from "swr/mutation";
-import { loginUser } from "../api/auth.api";
+import { LoginUserRequestType, loginUser } from "../api/auth.api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../common/AuthProvider";
 import { getCookieValue, setCookie } from "../api/authUtils";
 import { COOKIE_CONSTANTS } from "../api/constants";
+import { useMutation } from "react-query";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -22,29 +22,19 @@ const Login: React.FC = () => {
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
   });
-  const {
-    data,
-    error,
-    isMutating,
-    trigger: loginTrigger,
-  } = useSWRMutation(
-    `login-user`,
-    (
-      _key,
-      { arg: { username, password } }: { arg: typeof INITIAL_FORM_STATE }
-    ) => {
-      if (username && password) {
-        return loginUser({ username, password });
-      }
+
+  const { data, mutate, isError, isLoading } = useMutation(
+    (userDetails: LoginUserRequestType) => {
+      return loginUser(userDetails);
     }
   );
 
   const handleLogin = (values: typeof INITIAL_FORM_STATE) => {
-    loginTrigger({ username: values.username, password: values.password });
+    mutate({ username: values.username, password: values.password });
   };
 
   useEffect(() => {
-    if (error) {
+    if (isError) {
       navigate("/login");
     } else if (data) {
       const {
@@ -55,7 +45,7 @@ const Login: React.FC = () => {
       auth?.signin({ newtoken: access, refresh, redirectUrl });
       setCookie(COOKIE_CONSTANTS.REDIRECT_URL, "");
     }
-  }, [data, error, navigate]);
+  }, [data, isError, navigate]);
 
   return (
     <Container maxWidth="xs" sx={{ mt: "6rem" }}>
@@ -76,7 +66,7 @@ const Login: React.FC = () => {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={isMutating}
+              disabled={isLoading}
             >
               Login
             </Button>

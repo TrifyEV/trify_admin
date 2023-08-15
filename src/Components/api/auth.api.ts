@@ -5,5 +5,10 @@ export type LoginResponse = {
   refresh: string;
 };
 
-export const loginUser = (data: { username: string; password: string }) =>
+export type LoginUserRequestType = {
+  username: string;
+  password: string;
+};
+
+export const loginUser = (data: LoginUserRequestType) =>
   axiosInstance.post<LoginResponse>("/api/token/", data);

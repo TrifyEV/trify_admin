@@ -32,6 +32,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const signout = () => {
     setToken(null);
     clearCookie(COOKIE_CONSTANTS.TOKEN);
+    clearCookie(COOKIE_CONSTANTS.REFRESH_TOKEN);
     navigate("/login");
   };
 

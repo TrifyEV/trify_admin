@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
-import useSWR from "swr";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet-routing-machine";
 import L from "leaflet";
@@ -8,6 +7,7 @@ import { MapComponentContainer } from "./MapView.style";
 import { getVehicleJourney } from "../api/admin.api";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { useQuery } from "react-query";
 
 const DefaultIcon = L.icon({
   iconUrl: icon,
@@ -25,12 +25,20 @@ const MapComponent: React.FC<{
 }> = ({ bikeID, date, journey, setJourneyCount, setIsLoadingData }) => {
   const [reRenderRoute, setRerenderRoute] = useState(false);
 
-  const { data, isLoading } = useSWR(
-    `get-vehicle-journey-${bikeID}-${date?.format("YYYY-MM-DD")}`,
+  // const { data, isLoading } = useSWR(
+  //   `get-vehicle-journey-${bikeID}-${date?.format("YYYY-MM-DD")}`,
+  //   () => {
+  //     if (bikeID && date) {
+  //       return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
+  //     }
+  //   },
+  //   {}
+  // );
+
+  const { data, isLoading } = useQuery(
+    ["vehical-journey", bikeID, date?.format("YYYY-MM-DD")],
     () => {
-      if (bikeID && date) {
-        return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
-      }
+      return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
     }
   );
 
