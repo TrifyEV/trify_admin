@@ -25,16 +25,6 @@ const MapComponent: React.FC<{
 }> = ({ bikeID, date, journey, setJourneyCount, setIsLoadingData }) => {
   const [reRenderRoute, setRerenderRoute] = useState(false);
 
-  // const { data, isLoading } = useSWR(
-  //   `get-vehicle-journey-${bikeID}-${date?.format("YYYY-MM-DD")}`,
-  //   () => {
-  //     if (bikeID && date) {
-  //       return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
-  //     }
-  //   },
-  //   {}
-  // );
-
   const { data, isLoading } = useQuery(
     ["vehical-journey", bikeID, date?.format("YYYY-MM-DD")],
     () => {
