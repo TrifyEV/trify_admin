@@ -35,7 +35,6 @@ const MapComponent: React.FC<{
   );
 
   useEffect(() => {
-    console.log("data in map component", data);
     if (data?.data) {
       setJourneyCount(Object.getOwnPropertyNames(data.data).length);
     } else {

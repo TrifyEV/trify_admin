@@ -12,7 +12,7 @@ export const getCookieValue = (cookieName: string) => {
 export const setCookie = (
   name: string,
   value: string,
-  daysToExpire: number = 10
+  daysToExpire: number = 1
 ) => {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + daysToExpire);
