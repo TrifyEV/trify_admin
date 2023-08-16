@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../common/AuthProvider";
 import { getCookieValue, setCookie } from "../api/authUtils";
 import { COOKIE_CONSTANTS } from "../api/constants";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

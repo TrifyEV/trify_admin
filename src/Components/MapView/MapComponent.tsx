@@ -7,7 +7,7 @@ import { MapComponentContainer } from "./MapView.style";
 import { getVehicleJourney } from "../api/admin.api";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const DefaultIcon = L.icon({
   iconUrl: icon,
@@ -28,11 +28,14 @@ const MapComponent: React.FC<{
   const { data, isLoading } = useQuery(
     ["vehical-journey", bikeID, date?.format("YYYY-MM-DD")],
     () => {
-      return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
+      if (bikeID && date) {
+        return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
+      }
     }
   );
 
   useEffect(() => {
+    console.log("data in map component", data);
     if (data?.data) {
       setJourneyCount(Object.getOwnPropertyNames(data.data).length);
     } else {
