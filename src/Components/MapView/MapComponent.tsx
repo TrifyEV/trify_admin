@@ -31,16 +31,21 @@ const MapComponent: React.FC<{
       if (bikeID && date) {
         return getVehicleJourney(bikeID, "2023-01-01", "2023-12-31");
       }
+    },
+    {
+      select: (data) => {
+        return data?.data;
+      },
     }
   );
 
   useEffect(() => {
-    if (data?.data) {
-      setJourneyCount(Object.getOwnPropertyNames(data.data).length);
+    if (data) {
+      setJourneyCount(Object.getOwnPropertyNames(data).length);
     } else {
       setJourneyCount(0);
     }
-  }, [data?.data]);
+  }, [data]);
 
   useEffect(() => {
     setIsLoadingData(isLoading);
@@ -54,13 +59,13 @@ const MapComponent: React.FC<{
   }, [journey, data]);
 
   const locations = useMemo(() => {
-    if (!data?.data) return [];
-    const journeyKey = parseInt(Object.keys(data.data)?.[journey]);
+    if (!data) return [];
+    const journeyKey = parseInt(Object.keys(data)?.[journey]);
     if (!journeyKey || isNaN(journeyKey)) return [];
-    const journeyData = data.data[journeyKey];
+    const journeyData = data[journeyKey];
     if (!journeyData) return [];
     return journeyData.map((data) => L.latLng([data.lat, data.long]));
-  }, [data?.data, journey]);
+  }, [data, journey]);
 
   return (
     <MapComponentContainer>
